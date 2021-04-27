@@ -114,7 +114,8 @@ def main():
           #"(enc(1) + enc(1))) =",
           #decrypt(sk, (c0 * c1 + c1 + c0) * c1 * c0 * (c1 + c1)))
     msg = s.recv(50)
-    print("Le serveur a envoyé : "+msg.decode("utf-8"))
+    print("Le serveur a envoyé : "+msg.decode("utf-8"))# recevoir un message de puis le serveur
+    s.send(b"Bonjour Mr serveur!") # envoi de message vers le serveur
 
 if __name__ == "__main__":
     main()
