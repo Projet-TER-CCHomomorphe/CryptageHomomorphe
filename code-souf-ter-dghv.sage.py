@@ -1,5 +1,7 @@
 # import sage library
-from sage.all_cmdline import *   
+#coding:utf-8
+from sage.all_cmdline import *
+import socket
 
 # sagemath high level variables
 _sage_const_42 = Integer(42)
@@ -78,36 +80,41 @@ def decrypt(sk, c):
 
 
 def main():
-    pk, sk = keyGen()
 
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((socket.gethostname(), 1234))
+    
+    
+    pk, sk = keyGen()
     m0 = _sage_const_0
     c0 = encrypt(pk, m0)
     m0_dec = decrypt(sk, c0)
-
     m1 = _sage_const_1
     c1 = encrypt(pk, m1)
     m1_dec = decrypt(sk, c1)
 
-    print("m0_dec == m0:", m0_dec == m0)
-    print("m1_dec == m1:", m1_dec == m1)
+    #print("m0_dec == m0:", m0_dec == m0)
+    #print("m1_dec == m1:", m1_dec == m1)
 
-    print("dec(enc(0) + enc(0)) =", decrypt(sk, c0 + c0))
-    print("dec(enc(0) + enc(1)) =", decrypt(sk, c0 + c1))
-    print("dec(enc(1) + enc(0)) =", decrypt(sk, c1 + c0))
-    print("dec(enc(1) + enc(1)) =", decrypt(sk, c1 + c1))
+    #print("dec(enc(0) + enc(0)) =", decrypt(sk, c0 + c0))
+    #print("dec(enc(0) + enc(1)) =", decrypt(sk, c0 + c1))
+    #print("dec(enc(1) + enc(0)) =", decrypt(sk, c1 + c0))
+    #print("dec(enc(1) + enc(1)) =", decrypt(sk, c1 + c1))
 
-    print("dec(enc(0) * enc(0)) =", decrypt(sk, c0 * c0))
-    print("dec(enc(0) * enc(1)) =", decrypt(sk, c0 * c1))
-    print("dec(enc(1) * enc(0)) =", decrypt(sk, c1 * c0))
-    print("dec(enc(1) * enc(1)) =", decrypt(sk, c1 * c1))
+    #print("dec(enc(0) * enc(0)) =", decrypt(sk, c0 * c0))
+    #print("dec(enc(0) * enc(1)) =", decrypt(sk, c0 * c1))
+    #print("dec(enc(1) * enc(0)) =", decrypt(sk, c1 * c0))
+    #print("dec(enc(1) * enc(1)) =", decrypt(sk, c1 * c1))
 
-    print("dec(enc(1) * enc(1)) + enc(0) * (enc(1) + enc(1)) =",
-          decrypt(sk, c1 * c1 + c0 * (c1 + c1)))
-    print("dec(enc(0) * enc(1)) + enc(0) * (enc(1) + enc(1)) =",
-          decrypt(sk, c0 * c1 + c0 * (c1 + c1)))
-    print("dec((enc(0) * enc(1) + enc(1) + enc(0)) * enc(1) * enc(0) * ",
-          "(enc(1) + enc(1))) =",
-          decrypt(sk, (c0 * c1 + c1 + c0) * c1 * c0 * (c1 + c1)))
+    #print("dec(enc(1) * enc(1)) + enc(0) * (enc(1) + enc(1)) =",
+         # decrypt(sk, c1 * c1 + c0 * (c1 + c1)))
+    #print("dec(enc(0) * enc(1)) + enc(0) * (enc(1) + enc(1)) =",
+          #decrypt(sk, c0 * c1 + c0 * (c1 + c1)))
+    #print("dec((enc(0) * enc(1) + enc(1) + enc(0)) * enc(1) * enc(0) * ",
+          #"(enc(1) + enc(1))) =",
+          #decrypt(sk, (c0 * c1 + c1 + c0) * c1 * c0 * (c1 + c1)))
+    msg = s.recv(50)
+    print("Le serveur a envoyé : "+msg.decode("utf-8"))
 
 if __name__ == "__main__":
     main()
